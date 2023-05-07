@@ -8,7 +8,7 @@ const { ethers } = require("hardhat");
 
 const NAME = "AssignVotes";
 
-describe.only(NAME, function () {
+describe(NAME, function () {
   async function setup() {
     const [owner, assignerWallet, attackerWallet] = await ethers.getSigners();
 

