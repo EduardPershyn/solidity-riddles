@@ -8,7 +8,7 @@ const { ethers } = require("hardhat");
 
 const NAME = "Democracy";
 
-describe.only(NAME, function () {
+describe(NAME, function () {
   async function setup() {
       const [owner, attackerWallet] = await ethers.getSigners();
       const value = ethers.utils.parseEther("1");
@@ -25,6 +25,7 @@ describe.only(NAME, function () {
           ({ victimContract, attackerWallet } = await loadFixture(setup));
       })
 
+      // Use different addresses and transfer for re-voting.
       it("conduct your attack here", async function () {
           const signers = await ethers.getSigners();
           const attackerWallet2 = signers[2];

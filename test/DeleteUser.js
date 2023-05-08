@@ -25,7 +25,11 @@ describe(NAME, function () {
       ({ victimContract, attackerWallet } = await loadFixture(setup));
     });
 
-    it("conduct your attack here", async function () {});
+    it("conduct your attack here", async function () {
+        const AttackerFactory = await ethers.getContractFactory("DeleteUserAttacker");
+        const attackerContract = await AttackerFactory.deploy(victimContract.address);
+        await attackerContract.connect(attackerWallet).attack({ value: ethers.utils.parseEther("1") });
+    });
 
     after(async function () {
       expect(
