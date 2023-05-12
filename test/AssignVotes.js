@@ -47,14 +47,15 @@ describe(NAME, function () {
     it("conduct your attack here", async function () {
         const AttackerFactory = await ethers.getContractFactory("AssignVotesSolution");
         const attackerContract = await AttackerFactory.deploy(victimContract.address);
+        attackerContract.connect(attackerWallet).attack();
 
-        const signers = await ethers.getSigners();
-        attackerContract.connect(attackerWallet).attack(signers.map(signer => signer.address));
-
-        for (let i = 10; i < 20; i++) {
-            await victimContract.connect(signers[i]).vote(0);
-        }
-        await victimContract.execute(0);
+//        const signers = await ethers.getSigners();
+//        attackerContract.connect(attackerWallet).attack(signers.map(signer => signer.address));
+//
+//        for (let i = 10; i < 20; i++) {
+//            await victimContract.connect(signers[i]).vote(0);
+//        }
+//        await victimContract.execute(0);
     });
 
     after(async function () {
