@@ -5,7 +5,7 @@ const helpers = require("@nomicfoundation/hardhat-network-helpers")
 
 use(require("chai-as-promised"))
 
-describe.only("Viceroy", async function () {
+describe("Viceroy", async function () {
   let attackerWallet, attacker, oligarch, governance, communityWallet
 
   before(async function () {
