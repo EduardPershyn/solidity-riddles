@@ -5,7 +5,7 @@ const { ethers } = require("hardhat");
 
 const NAME = "ReadOnlyPool";
 
-describe(NAME, function () {
+describe.only(NAME, function () {
     async function setup() {
         const [, attackerWallet] = await ethers.getSigners();
 
@@ -42,7 +42,13 @@ describe(NAME, function () {
 
         // prettier-ignore
         it("conduct your attack here", async function () {
-    
+            const solutionFactory = await ethers.getContractFactory("ReadonlyAttacker");
+            const solutionContract = await solutionFactory.deploy(
+              readOnlyContract.address,
+              vulnerableDeFiContract.address
+            );
+
+            await solutionContract.connect(attackerWallet).attack({value: ethers.utils.parseEther("1.9")});
     });
 
         after(async function () {
