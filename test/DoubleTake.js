@@ -5,7 +5,7 @@ const { ethers } = require("hardhat");
 
 const NAME = "DoubleTake";
 
-describe.only(NAME, function () {
+describe(NAME, function () {
     async function setup() {
         const [owner, attackerWallet] = await ethers.getSigners();
 

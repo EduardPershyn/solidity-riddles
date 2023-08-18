@@ -16,7 +16,7 @@ contract DoubleTakeHack {
         victim = victim_;
     }
 
-    function attack() external payable {
+    function attack() external {
         address user = 0x70997970C51812dc3A010C7d01b50e0d17dc79C8;
         uint8 v = 28;
         bytes32 r = 0xf202ed96ca1d80f41e7c9bbe7324f8d52b03a2c86d9b731a1d99aa018e9d77e7;
