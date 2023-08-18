@@ -5,7 +5,7 @@ const { ethers } = require("hardhat");
 const NAME = "FlashLoan tests";
 const OneHundred_Ether = "0x56bc75e2d63100000";
 
-describe.only(NAME, function () {
+describe(NAME, function () {
   async function setup() {
     const [owner, lender, borrower] = await ethers.getSigners();
     const TwentyEther = ethers.utils.parseEther("20");

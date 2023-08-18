@@ -5,7 +5,7 @@ const { ethers } = require("hardhat");
 
 const NAME = "DoubleTake";
 
-describe(NAME, function () {
+describe.only(NAME, function () {
     async function setup() {
         const [owner, attackerWallet] = await ethers.getSigners();
 
@@ -30,7 +30,11 @@ describe(NAME, function () {
                 .claimAirdrop("0x70997970c51812dc3a010c7d01b50e0d17dc79c8", ethers.utils.parseEther("1"), v, r, s);
         });
 
-        it("conduct your attack here", async function () {});
+        it("conduct your attack here", async function () {
+            const DoubleTakeAttackerFactory = await ethers.getContractFactory("DoubleTakeHack");
+            const doubleTakeAttackerContract = await DoubleTakeAttackerFactory.deploy(victimContract.address);
+            await doubleTakeAttackerContract.connect(attackerWallet).attack();
+        });
 
         after(async function () {
             expect(await ethers.provider.getBalance(victimContract.address)).to.equal(0, "victim contract is drained");
